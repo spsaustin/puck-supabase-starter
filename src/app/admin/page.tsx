@@ -18,11 +18,11 @@ export default async function AdminHome() {
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: "var(--space-6)", flexWrap: "wrap" }}>
           <div style={{ display: "flex", flexDirection: "column", gap: "var(--space-3)" }}>
             <Heading level={1} size="lg">Editor</Heading>
-            <Text size="sm" muted>Signed in as <code>{admin.email}</code>{admin.source === "dev" ? " (development fallback; no identity provider configured)" : ""}</Text>
+            <Text size="sm" muted>Signed in as <code>{admin.email}</code> with Google</Text>
           </div>
           <div style={{ display: "flex", gap: "var(--space-4)" }}>
             <Button href="/" tone="secondary">View the site</Button>
-            {admin.source !== "dev" ? <form action="/auth/signout" method="post"><Button type="submit" tone="ghost">Sign out</Button></form> : null}
+            <form action="/auth/signout" method="post"><Button type="submit" tone="ghost">Sign out</Button></form>
           </div>
         </div>
 

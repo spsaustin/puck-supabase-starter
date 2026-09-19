@@ -12,8 +12,7 @@ export async function proxy(request: NextRequest) {
   const { response, email } = await refreshSession(request);
   const { pathname } = request.nextUrl;
   const isSignin = pathname.startsWith("/admin/signin");
-  const devFallback = process.env.NODE_ENV !== "production" && !process.env.NEXT_PUBLIC_SUPABASE_URL && !process.env.SUPABASE_URL;
-  if (pathname.startsWith("/admin") && !isSignin && !email && !devFallback) {
+  if (pathname.startsWith("/admin") && !isSignin && !email) {
     if (pathname.startsWith("/api/")) return NextResponse.json({ error: "Not authenticated." }, { status: 401 });
     const url = request.nextUrl.clone();
     url.pathname = "/admin/signin";

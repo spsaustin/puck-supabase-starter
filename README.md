@@ -16,8 +16,10 @@ holds up in production:
   over the seeds.
 - **Every publish is a version.** Rollback is republishing an earlier one.
   Nothing is deleted.
-- **A gate, checked on every request.** Google sign-in through Supabase Auth
-  plus an allowlist. Removing an address revokes access immediately.
+- **One gate, checked on every request.** Supabase Google OAuth is the only
+  way in; there is no password, magic link, access code or development
+  bypass. An allowlist decides who may edit, and removing an address revokes
+  access immediately.
 - **A design-system slot.** Blocks import only from `src/ds`. Replace its
   tokens and primitives with your own system and the whole site restyles.
 
@@ -46,14 +48,16 @@ project and sets the Supabase variables) and asks for `ADMIN_EMAILS`. Then:
 ```bash
 npx create-next-app@latest my-site --example https://github.com/spsaustin/puck-supabase-starter
 cd my-site
-cp .env.example .env.local   # fill in from Supabase → Project Settings → API, or leave empty
+cp .env.example .env.local   # fill in from Supabase → Project Settings → API
 npm run dev
 ```
 
-With no Supabase variables set, development mode opens the editor for a local
-reviewer (`dev@localhost`) and writes publishes to `.content/` on disk, so you
-can build pages before wiring anything. This fallback never engages in a production
-build.
+Google through Supabase is the only way into the editor, locally too: with no
+Supabase variables set, `/admin` admits nobody. For local work, point
+`.env.local` at a Supabase project (the free tier is enough) with Google
+enabled, and add `http://localhost:3000/auth/callback` to its redirect list.
+Without a service key, publishes are written to `.content/` on disk rather
+than the database.
 
 ## Where things live
 
@@ -66,7 +70,7 @@ build.
 | `src/puck/pages.ts` | The page registry with seed compositions. Add a page here. |
 | `src/puck/storage.ts` | Page store: Supabase with versions and rollback, local-file fallback. |
 | `src/puck/render.tsx` | Server rendering; the public site never ships the editor. |
-| `src/lib/auth.ts` | The gate. `ADMIN_EMAILS` and the `admins` table. |
+| `src/lib/auth.ts` | The gate: a Google-created Supabase session, then `ADMIN_EMAILS` or the `admins` table. |
 | `src/proxy.ts` | Session refresh and the outer fence for `/admin`. |
 | `src/app/(site)/[[...slug]]` | One route renders every registered page. |
 | `src/app/admin` | Index, editor, history with rollback, sign-in. |

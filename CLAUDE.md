@@ -15,6 +15,7 @@ Rules:
 - Never type a canonical fact into a page; add a governed block instead.
 - `npm run verify` must pass before a push.
 - Never commit `.env.local` or any key.
+- Supabase Google OAuth is the only gate. Do not add a password, magic-link, access-code or development bypass.
 
 <!-- BEGIN:nextjs-agent-rules -->
 

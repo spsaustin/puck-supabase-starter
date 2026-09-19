@@ -58,9 +58,13 @@ here, not in a section.
 6. **Verify before push, in one command.** Typecheck, lint, content rules,
    tests and build run locally and in CI from the same script. Red CI is not
    a flake until proven so. See §17.
-7. **Secrets never enter a git tree.** Not in code, not in docs, not in a
+7. **One gate: Supabase Google OAuth.** Every gated surface, staff or
+   client, authenticates through Supabase Auth with Google as the only
+   provider. Authorisation (who may do what) is a list or a role checked on
+   every request. No password, magic link, access code or bypass. See §8.
+8. **Secrets never enter a git tree.** Not in code, not in docs, not in a
    handoff. A key pasted into a chat is a key that gets rotated. See §11.5.
-8. **Honest copy.** The site claims only what the system can show. No
+9. **Honest copy.** The site claims only what the system can show. No
    "guaranteed", "instant" or "real-time" unless the mechanism exists and is
    measured. CORE_PRD owns the vocabulary; §7.4 enforces it.
 
@@ -74,7 +78,7 @@ here, not in a section.
 | Language | TypeScript, `strict: true` | {{5.x}} | |
 | UI runtime | React | {{19.x}} | |
 | Visual editor | {{Puck}} | {{0.23}} | {{Renders the real components; no proxy design.}} |
-| Auth | {{Supabase Auth (GoTrue), Google OIDC}} | | {{Identity proves who; the allowlist decides access.}} |
+| Auth | Supabase Auth (GoTrue) with Google as the only provider | | The only gate. Google proves who; a list or role decides access. |
 | Database | {{Supabase Postgres}} · {{PostGIS if geography}} | {{Postgres 17}} | |
 | Hosting | {{Vercel}} | | {{Free tier acceptable? yes/no}} |
 | Email | {{Resend}} | | |
@@ -108,7 +112,7 @@ when it is missing. "Fails closed" or "degrades to X" is the required answer;
 
 | Variable | Set by | Scope | Missing → |
 | --- | --- | --- | --- |
-| `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` | integration | public | sign-in disabled; admin closed |
+| `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` | integration | public | the only gate is absent; every gated surface admits nobody |
 | `SUPABASE_SERVICE_ROLE_KEY` | integration | server only | store falls back to local files; admin index warns |
 | `DATABASE_URL` (pooler) | operator | server only | {{}} |
 | `ADMIN_EMAILS` | operator | server only | nobody may edit |
@@ -120,9 +124,8 @@ without a deploy. List every one.}}
 **4.3 Configuration rules.**
 - A half-configured feature reports itself as unconfigured rather than
   admitting through whichever check is missing.
-- Development-only conveniences (an access code, a dev sign-in) are guarded by
-  `NODE_ENV !== "production"` **and** an explicit flag, and can never engage
-  in a production build.
+- There are no development-only ways past a gate. Local work signs in with
+  the same Supabase Google OAuth against a development Supabase project.
 
 ---
 
@@ -242,13 +245,14 @@ with a 301. The map lives in `src/content/redirects` and is tested.
 
 ## 8. Identity and access
 
-**8.1 Populations.** Deliberately separate systems.
+**8.1 Populations.** One identity system, separate authorisation per
+population.
 
 | Population | Enters at | Identity | Authorisation | Session |
 | --- | --- | --- | --- | --- |
-| Staff / editors | `/admin` | {{Google via Supabase Auth}} | allowlist (env + table), re-checked every request | {{8 h}} |
-| Owners (analytics) | `/owner` | same | roster with roles; RLS on reads | |
-| Clients | `/portal` | {{email link / password / SSO}} | tenancy (org ↔ records) | {{12 h}} |
+| Staff / editors | `/admin` | Supabase Google OAuth | allowlist (env + table), re-checked every request | {{8 h}} |
+| Owners (analytics) | `/owner` | Supabase Google OAuth | roster with roles; RLS on reads | |
+| Clients | `/portal` | Supabase Google OAuth | tenancy (org ↔ records) | {{12 h}} |
 | Public | everything else | none | rate limits only | |
 
 **8.2 Gate rules.**
@@ -256,12 +260,14 @@ with a 301. The map lives in `src/content/redirects` and is tested.
   call per request.
 - Expired sessions refresh transparently through a route handler, never
   inside a page render (pages cannot set cookies).
-- Provider constraint: {{only Google-authenticated sessions admitted; password
-  or magic-link sessions for the same address refused}}.
+- Provider constraint: only sessions Google created are admitted. A
+  password, magic-link or other-provider session for the same address is
+  refused, and those providers stay disabled in Supabase.
 - MFA policy: {{aal2 required · provider's own second factor enforced on the
   accounts}}.
 - Removing an address from the list revokes access on the next request.
-- The dev fallback (§4.3) reports `mfa:false` and cannot run in production.
+- No development bypass exists (§4.3). Local environments use a development
+  Supabase project with the same Google provider.
 
 **8.3 Where the gate runs.** In the proxy/middleware as the outer fence (redirect
 or 401), **and** in every admin page and API route as the real check. API

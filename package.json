@@ -6,9 +6,16 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit",
+    "qa:content": "tsx scripts/content-lint.ts",
+    "test:guard": "tsx scripts/guard-tests.ts",
+    "verify": "npm run typecheck && npm run lint && npm run qa:content && npm run test:guard && npm run build"
   },
   "dependencies": {
+    "@puckeditor/core": "^0.23.0",
+    "@supabase/ssr": "^0.12.7",
+    "@supabase/supabase-js": "^2.116.0",
     "next": "16.3.5",
     "react": "19.2.8",
     "react-dom": "19.2.8"
@@ -19,6 +26,10 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.3.5",
+    "tsx": "^4.23.13",
     "typescript": "^5"
+  },
+  "engines": {
+    "node": ">=20"
   }
 }

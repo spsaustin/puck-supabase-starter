@@ -1,0 +1,115 @@
+/*
+ * DESIGN SYSTEM SLOT — tokens.
+ *
+ * Everything the blocks know about colour, type, space, radius and elevation
+ * is a variable declared here. Replace this file with your own design
+ * system's tokens (keep the variable names, or map yours onto them) and every
+ * block restyles itself. Nothing in src/puck reads a raw colour or pixel.
+ *
+ * The values below are a deliberately neutral placeholder: legible, quiet,
+ * and obviously not a brand.
+ */
+:root {
+  color-scheme: light;
+
+  /* Surfaces and ink */
+  --surface-page: #fafaf8;
+  --surface-card: #ffffff;
+  --surface-sunken: #f1f1ed;
+  --surface-inverse: #17181a;
+  --text-strong: #131416;
+  --text-body: #2b2d31;
+  --text-muted: #5f636b;
+  --text-faint: #8b8f97;
+  --text-link: #1f4fbf;
+  --text-on-inverse: #f4f4f1;
+  --text-muted-on-inverse: #b7bac2;
+  --line-hairline: rgba(19, 20, 22, 0.08);
+  --line-subtle: rgba(19, 20, 22, 0.16);
+  --line-strong: rgba(19, 20, 22, 0.3);
+  --line-on-inverse: rgba(244, 244, 241, 0.18);
+
+  /* Actions */
+  --action-primary: #1f4fbf;
+  --action-primary-hover: #183f99;
+  --action-primary-text: #ffffff;
+  --action-secondary: #ffffff;
+  --action-secondary-hover: #f1f1ed;
+  --action-secondary-text: #131416;
+  --ring-focus: 0 0 0 3px rgba(31, 79, 191, 0.35);
+
+  /* Semantic tones */
+  --tone-info: #1f4fbf;    --tone-info-bg: #e8eefc;
+  --tone-success: #1f7a3a; --tone-success-bg: #e5f4ea;
+  --tone-warn: #9a5b00;    --tone-warn-bg: #fdf1dc;
+  --tone-danger: #b3261e;  --tone-danger-bg: #fbe7e5;
+
+  /* Type */
+  --font-ui: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-display: var(--font-ui);
+  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --size-2xs: 12px; --size-xs: 13px; --size-sm: 14px; --size-md: 16px; --size-lg: 18px;
+  --size-xl: 21px; --size-2xl: 26px; --size-3xl: 32px; --size-4xl: 40px; --size-5xl: 52px; --size-6xl: 66px;
+  --leading-tight: 1.05; --leading-snug: 1.18; --leading-normal: 1.35; --leading-relaxed: 1.55;
+  --weight-regular: 400; --weight-medium: 500; --weight-semibold: 600; --weight-bold: 700;
+  --tracking-tight: -0.015em; --tracking-eyebrow: 0.08em;
+
+  /* Space */
+  --space-1: 2px; --space-2: 4px; --space-3: 6px; --space-4: 8px; --space-5: 12px; --space-6: 16px;
+  --space-7: 20px; --space-8: 24px; --space-9: 32px; --space-10: 40px; --space-11: 48px; --space-12: 64px;
+  --space-13: 80px; --space-14: 96px; --space-15: 128px;
+  --pad-section: var(--space-14); --pad-section-tight: var(--space-12); --pad-card: var(--space-8);
+  --container-max: 1200px; --container-narrow: 720px; --gutter: var(--space-6);
+  --control-height: 44px;
+
+  /* Shape and depth */
+  --radius-control: 8px; --radius-card: 14px; --radius-pill: 999px;
+  --shadow-1: 0 1px 2px rgba(19, 20, 22, 0.06);
+  --shadow-2: 0 6px 20px rgba(19, 20, 22, 0.08);
+
+  /* Motion */
+  --dur-fast: 120ms; --dur-base: 200ms; --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --surface-page: #141517; --surface-card: #1c1d20; --surface-sunken: #0f1012; --surface-inverse: #f4f4f1;
+    --text-strong: #f4f4f1; --text-body: #dfe0dc; --text-muted: #a3a7ae; --text-faint: #75797f; --text-link: #8fb0ff;
+    --text-on-inverse: #131416; --text-muted-on-inverse: #4c4f56;
+    --line-hairline: rgba(244, 244, 241, 0.08); --line-subtle: rgba(244, 244, 241, 0.16); --line-strong: rgba(244, 244, 241, 0.3);
+    --line-on-inverse: rgba(19, 20, 22, 0.18);
+    --action-primary: #6d93f0; --action-primary-hover: #86a6f5; --action-primary-text: #0b1330;
+    --action-secondary: #1c1d20; --action-secondary-hover: #26272b; --action-secondary-text: #f4f4f1;
+    --tone-info-bg: #1a2440; --tone-success-bg: #14301e; --tone-warn-bg: #3a2a0a; --tone-danger-bg: #3d1614;
+    --tone-info: #8fb0ff; --tone-success: #7cd497; --tone-warn: #f0b95a; --tone-danger: #ff8a80;
+    --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.4); --shadow-2: 0 6px 20px rgba(0, 0, 0, 0.5);
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --surface-page: #141517; --surface-card: #1c1d20; --surface-sunken: #0f1012; --surface-inverse: #f4f4f1;
+  --text-strong: #f4f4f1; --text-body: #dfe0dc; --text-muted: #a3a7ae; --text-faint: #75797f; --text-link: #8fb0ff;
+  --text-on-inverse: #131416; --text-muted-on-inverse: #4c4f56;
+  --line-hairline: rgba(244, 244, 241, 0.08); --line-subtle: rgba(244, 244, 241, 0.16); --line-strong: rgba(244, 244, 241, 0.3);
+  --line-on-inverse: rgba(19, 20, 22, 0.18);
+  --action-primary: #6d93f0; --action-primary-hover: #86a6f5; --action-primary-text: #0b1330;
+  --action-secondary: #1c1d20; --action-secondary-hover: #26272b; --action-secondary-text: #f4f4f1;
+  --tone-info-bg: #1a2440; --tone-success-bg: #14301e; --tone-warn-bg: #3a2a0a; --tone-danger-bg: #3d1614;
+  --tone-info: #8fb0ff; --tone-success: #7cd497; --tone-warn: #f0b95a; --tone-danger: #ff8a80;
+  --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.4); --shadow-2: 0 6px 20px rgba(0, 0, 0, 0.5);
+}
+
+/* Base */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--surface-page); color: var(--text-body);
+  font-family: var(--font-ui); font-size: var(--size-md); line-height: var(--leading-relaxed);
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3, h4 { margin: 0; color: var(--text-strong); font-family: var(--font-display); letter-spacing: var(--tracking-tight); line-height: var(--leading-snug); }
+p { margin: 0; }
+a { color: var(--text-link); }
+img { max-width: 100%; height: auto; display: block; }
+:focus-visible { outline: none; box-shadow: var(--ring-focus); border-radius: var(--radius-control); }

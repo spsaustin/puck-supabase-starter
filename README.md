@@ -112,7 +112,9 @@ the value.
 npm run verify   # typecheck, lint, content lint over the seeds, guard tests, build
 ```
 
-CI runs the same on every push (`.github/workflows/verify.yml`).
+CI runs the same on every push (`.github/workflows/verify.yml`), and a second
+workflow runs `npm audit`, a key-prefix grep and CodeQL (`security.yml`).
+Dependabot opens weekly update PRs. See `SECURITY.md`.
 
 ## Self-hosting Supabase later
 
